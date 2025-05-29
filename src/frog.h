@@ -16,9 +16,16 @@
  * - disconnect the frog from both J and K.
  */
 
-
  class FROG {
   public:
+    /**
+     * Setting the high or low active state
+     * must be performed before the call to setPins() as that
+     * call will set all pins to the current inactive state.
+     */
+    void setPinsActiveHigh() {myMutex->setOutputsActiveHigh;}
+    void setpinsActiveLow() {myMutex->setOutputsActiveLow;}
+
     void setPins(uint8_t pinConnectJ, uint8_t pinConnectK);
     void setEvents(uint16_t eventIndexConnectJ, uint16_t eventIndexConnectK, uint16_t eventIndexDisconnect);
 
@@ -26,13 +33,9 @@
 
     /**
      * Compares receivedEventIndex with those stored for this frog
-     * and executes appropriately if found.
-     * Returns true if there was a match, else false.
+     * and executes appropriately if any found.
      */
     void eventReceived(uint16_t receivedEventIndex);
-
-
-
 
   private:
     uint8_t pinConnectJ; // Setting this pin active will connect the frog to the J wire.
@@ -43,9 +46,6 @@
 
     // A software object to ensure that the frog can only be connected to one of J and K at a time.
     HW_MUTEX myMutex;
-
-
-
  };
  
 #endif

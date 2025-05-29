@@ -7,7 +7,7 @@ void FROG::setPins(uint8_t pinConnectJ, uint8_t pinConnectK) {
   // Make these pins mutually exclusive, i.e. only one can be active at a time.
   myMutex.setOutputPins(std::vector<uint8_t> {this->pinConnectJ, this->pinConnectK} );
 
-  // Add a delay to fo from all inactive to one pin active.
+  // Add a delay to from all inactive to one pin active.
   myMutex.setDelaymS(5000);
 
 }
