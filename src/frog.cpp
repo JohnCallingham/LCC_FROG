@@ -18,10 +18,6 @@ void FROG::setEvents(uint16_t eventIndexConnectJ, uint16_t eventIndexConnectK, u
   this->eventIndexDisconnect = eventIndexDisconnect;
 }
 
-void FROG::process() {
-  myMutex.process();
-}
-
 void FROG::eventReceived(uint16_t receivedEventIndex) {
   // Compare receivedEventIndex with each of the three events for this frog.
   if (receivedEventIndex == this->eventIndexConnectJ) {
