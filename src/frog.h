@@ -24,7 +24,7 @@
      * call will set all pins to the inactive state.
      */
     void setPinsActiveHigh() {myMutex.setOutputsActiveHigh();}
-    void setpinsActiveLow() {myMutex.setOutputsActiveLow();}
+    void setPinsActiveLow() {myMutex.setOutputsActiveLow();}
 
     void setPins(uint8_t pinConnectJ, uint8_t pinConnectK);
     void setEvents(uint16_t eventIndexConnectJ, uint16_t eventIndexConnectK, uint16_t eventIndexDisconnect);
