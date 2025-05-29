@@ -3,6 +3,6 @@
 "version": "0.1.2",
 "dependencies":
   {
-    "external-repo": "https://github.com/JohnCallingham/HW_MUTEX.git"
+    "external-repo": "https://github.com/JohnCallingham/HW_MUTEX.git@^0.1.1"
   }
 }
