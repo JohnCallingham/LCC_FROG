@@ -23,7 +23,7 @@ void FROG::process() {
 }
 
 void FROG::eventReceived(uint16_t receivedEventIndex) {
-  // Compare receivedEventIndex with the three events for this frog.
+  // Compare receivedEventIndex with each of the three events for this frog.
   if (receivedEventIndex == this->eventIndexConnectJ) {
     // Set pinConnectJ active.
     myMutex.setPinActive(this->pinConnectJ);
@@ -32,6 +32,6 @@ void FROG::eventReceived(uint16_t receivedEventIndex) {
     myMutex.setPinActive(this->pinConnectK);
   } else if (receivedEventIndex == this->eventIndexDisconnect) {
     // Make pinConnectJ and pinConnectK both inactive.
-    // TO DO. Need to add setAllPinsInactive() to HW_MUTEX.
+    myMutex.setAllPinsInActive();
   }
 }
