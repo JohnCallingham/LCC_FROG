@@ -20,11 +20,13 @@
   public:
     /**
      * Setting the high or low active state
-     * must be performed before the call to setPins() as that
+     * must be performed before the call to .setPins() as that
      * call will set all pins to the inactive state.
      */
     void setPinsActiveHigh() {myMutex.setOutputsActiveHigh();}
     void setPinsActiveLow() {myMutex.setOutputsActiveLow();}
+
+    void setDelaymS(unsigned long delaymS) {myMutex.setDelaymS(delaymS);}
 
     void setPins(uint8_t pinConnectJ, uint8_t pinConnectK);
     void setEvents(uint16_t eventIndexConnectJ, uint16_t eventIndexConnectK, uint16_t eventIndexDisconnect);
