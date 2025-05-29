@@ -1,6 +1,6 @@
 {
 "name": "FROG",
-"version": "0.1.4",
+"version": "0.1.5",
 "dependencies":
   {
     "external-repo": "https://github.com/JohnCallingham/HW_MUTEX.git@^0.1.1"
