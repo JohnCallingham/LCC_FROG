@@ -2,6 +2,8 @@
 #define FROG_H
 
 #include <Arduino.h>
+#include "hw_mutex.h"
+#include <vector>
 
 /**
  * frog.h
@@ -20,15 +22,28 @@
     void setPins(uint8_t pinConnectJ, uint8_t pinConnectK);
     void setEvents(uint16_t eventIndexConnectJ, uint16_t eventIndexConnectK, uint16_t eventIndexDisconnect);
 
+    void process();
+
+    /**
+     * Compares receivedEventIndex with those stored for this frog
+     * and executes appropriately if found.
+     * Returns true if there was a match, else false.
+     */
+    void eventReceived(uint16_t receivedEventIndex);
+
 
 
 
   private:
     uint8_t pinConnectJ; // Setting this pin active will connect the frog to the J wire.
     uint8_t pinConnectK; // Setting this pin active will connect the frog to the K wire.
-    uint16_t eventIndexConnectJ; // Receiving this event will connect the frog to the J wire.
-    uint16_t eventIndexConnectK; // Receiving this event will connect the frog to the K wire.
-    uint16_t eventIndexDisconnect; // Receiving this event will disconnect the frog from both J and K.
+    uint16_t eventIndexConnectJ; // Receiving this event will set pinConnectJ active.
+    uint16_t eventIndexConnectK; // Receiving this event will set pinConnectK active.
+    uint16_t eventIndexDisconnect; // Receiving this event will set pinConnectJ and pinConnectK inactive.
+
+    // A software object to ensure that the frog can only be connected to one of J and K at a time.
+    HW_MUTEX myMutex;
+
 
 
  };
