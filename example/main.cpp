@@ -1,7 +1,7 @@
 #include <Arduino.h>
 #include "frog.h"
 
-// Create a FROG object.
+// Create a Frog object.
 Frog myFrog;
 
 void setup() {
