@@ -2,7 +2,7 @@
 #include "frog.h"
 
 // Create a FROG object.
-FROG myFrog;
+Frog myFrog;
 
 void setup() {
   Serial.begin(115200);

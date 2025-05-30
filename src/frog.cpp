@@ -1,6 +1,6 @@
 #include "frog.h"
 
-void FROG::setPins(uint8_t pinConnectJ, uint8_t pinConnectK) {
+void Frog::setPins(uint8_t pinConnectJ, uint8_t pinConnectK) {
   this->pinConnectJ = pinConnectJ;
   this->pinConnectK = pinConnectK;
 
@@ -12,13 +12,13 @@ void FROG::setPins(uint8_t pinConnectJ, uint8_t pinConnectK) {
 
 }
 
-void FROG::setEvents(uint16_t eventIndexConnectJ, uint16_t eventIndexConnectK, uint16_t eventIndexDisconnect) {
+void Frog::setEvents(uint16_t eventIndexConnectJ, uint16_t eventIndexConnectK, uint16_t eventIndexDisconnect) {
   this->eventIndexConnectJ = eventIndexConnectJ;
   this->eventIndexConnectK = eventIndexConnectK;
   this->eventIndexDisconnect = eventIndexDisconnect;
 }
 
-void FROG::eventReceived(uint16_t receivedEventIndex) {
+void Frog::eventReceived(uint16_t receivedEventIndex) {
   // Compare receivedEventIndex with each of the three events for this frog.
   if (receivedEventIndex == this->eventIndexConnectJ) {
     myMutex.setPinActive(this->pinConnectJ);

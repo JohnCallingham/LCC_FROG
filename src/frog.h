@@ -16,7 +16,7 @@
  * - disconnect the frog from both J and K.
  */
 
- class FROG {
+ class Frog {
   public:
     /**
      * Setting the high or low active state
@@ -47,7 +47,7 @@
     uint16_t eventIndexDisconnect; // Receiving this event will set pinConnectJ and pinConnectK inactive.
 
     // A software object to ensure that the frog can only be connected to one of J and K at a time.
-    HW_MUTEX myMutex;
+    HwMutex myMutex;
  };
  
 #endif
