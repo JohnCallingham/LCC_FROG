@@ -1,20 +1,25 @@
 #ifndef FROG_H
 #define FROG_H
 
-#include <Arduino.h>
-#include "hw_mutex.h"
-#include <vector>
-
 /**
  * frog.h
  * 
- * The main code will support two frogs. Each frog will be a frog object.
- * 
- * Each frog has 3 events;-
- * - connect the frog to J
- * - connect the frog to K
- * - disconnect the frog from both J and K.
+ * The Frog class represents one frog. It provides the following functionlity;-
+ * 1. Initialise the object without sending any events.
+ * 2. When the hub is connected it sends an event to indicate its current state which can be one of;-
+ *  a. frog connected to the J wire.
+ *  b. frog connected to the K wire.
+ *  c. frog disconnected from both the J and K wires.
+ * 3. When an event is consumed it provides the aprpriate action. The events and associated actions are;-
+ *  a. eventIndexConnectJ - causes the frog to be connected to the J wire.
+ *  b. eventIndexConnectK - causes the frog to be connected to the K wire.
+ *  c. eventIndexDisconnect - causes the frog to disconnect from both the J and K wires.
+ * 4. Responds to a query from JMRI for current state based on event index. This uses function userState().
  */
+
+#include <Arduino.h>
+#include "hw_mutex.h"
+#include <vector>
 
  class Frog {
   public:
