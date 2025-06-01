@@ -21,7 +21,7 @@
   * TO DO: need to maintain the current state of the frog - J, K or disconnected.
   * This will be used to respond to a JMRI request for state.
   * What to return if in the process of waiting for the timeout to expire? Disconnected need to ensure that this state is kept up to date 
-
+  * poss delay the servo sending its reached event until it's frog has switched.
   */
 
 #include <Arduino.h>
