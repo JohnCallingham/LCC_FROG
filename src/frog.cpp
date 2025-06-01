@@ -28,3 +28,11 @@ void Frog::eventReceived(uint16_t receivedEventIndex) {
     myMutex.setAllPinsInActive();
   }
 }
+
+bool Frog::eventIndexMatchesThisFrog(uint16_t index) {
+  if (index == this->eventIndexConnectJ) return true;
+  if (index == this->eventIndexConnectK) return true;
+  if (index == this->eventIndexDisconnect) return true;
+
+  return false;
+}

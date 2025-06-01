@@ -49,6 +49,11 @@
     // BUT: don't think that we can send an event which is a consumer event!!!
 
     /**
+     * Returns true if index matches one of this object's events, else false.
+     */
+    bool eventIndexMatchesThisFrog(uint16_t index);
+
+    /**
      * To be called from loop() to enable a delay in switching from one output to another.
      */
     void process() {myMutex.process();}
