@@ -20,7 +20,7 @@
  /**
   * TO DO: need to maintain the current state of the frog - J, K or disconnected.
   * This will be used to respond to a JMRI request for state.
-  * What to return if in the process of waiting for the timeout to expire?
+  * What to return if in the process of waiting for the timeout to expire? Disconnected 
 
   */
 
