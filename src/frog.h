@@ -6,7 +6,7 @@
  * 
  * The Frog class represents one frog. It provides the following functionlity;-
  * 1. Initialise the object without sending any events.
- * 2. When the hub is connected it sends an event to indicate its current state which can be one of;-
+ * 2. CANNOT DO THIS AS CONSUMED EVENTS CANNOT BE SENT!!! When the hub is connected it sends an event to indicate its current state which can be one of;-
  *  a. frog connected to the J wire.
  *  b. frog connected to the K wire.
  *  c. frog disconnected from both the J and K wires.
@@ -19,7 +19,7 @@
 
  /**
   * TO DO: need to maintain the current state of the frog - J, K or disconnected.
-  * This will be used to send initial state when hub connected and to respond to to a JMRI request for state.
+  * This will be used to respond to a JMRI request for state.
   * What to return if in the process of waiting for the timeout to expire?
 
   */
@@ -31,7 +31,7 @@
  class Frog {
   public:
     void initialise() { this->currentState = State::DISCONNECTED; }
-    
+
     /**
      * Setting the high or low active state
      * must be performed before the call to .setPins() as that
@@ -44,6 +44,9 @@
 
     void setPins(uint8_t pinConnectJ, uint8_t pinConnectK);
     void setEvents(uint16_t eventIndexConnectJ, uint16_t eventIndexConnectK, uint16_t eventIndexDisconnect);
+
+    int getEventForCurrentState(); // Used when the hub is (re)connected.
+    // BUT: don't think that we can send an event which is a consumer event!!!
 
     /**
      * To be called from loop() to enable a delay in switching from one output to another.
