@@ -53,15 +53,15 @@ void Frog::print() {
 
 bool Frog::eventIndexMatchesCurrentState(uint16_t index) {
   if (index == this->eventIndexConnectJ) {
-    if (currentState == State::CONNECTED_J) return true; else return false;
+    return (currentState == State::CONNECTED_J);
   } 
   
   if (index == this->eventIndexConnectK) {
-    if (currentState == State::CONNECTED_K) return true; else return false;
+    return (currentState == State::CONNECTED_K);
   }
 
   if (index == this->eventIndexDisconnect) {
-    if (currentState == State::DISCONNECTED) return true; else return false;
+    return (currentState == State::DISCONNECTED);
   }
 
   return false; // To keep the compiler happy!
