@@ -53,9 +53,6 @@ void pceCallback(uint16_t index) {
   }
 }
 
-
-
-
 void setup() {
   Serial.begin(115200);
   delay(5000);
