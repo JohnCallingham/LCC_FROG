@@ -1,40 +1,94 @@
 #include <Arduino.h>
 #include "frog.h"
 
-// Create a Frog object.
-Frog myFrog;
+#define NUM_FROG 2
+#define NUM_EVENT NUM_FROG * 3 // Each frog has connectJ, connectK and disconnect events.
+
+// Create two Frog objects and set their pins.
+Frog frog0(11, 12);
+Frog frog1(21, 22);
+
+// Declare an array of pointers to the Frog objects.
+Frog *frog[NUM_FROG];
+
+...
+
+/**
+ * userState() is called when JMRI queries the state of an event index.
+ */
+enum evStates { VALID=4, INVALID=5, UNKNOWN=7 };
+uint8_t userState(uint16_t index) {
+  Serial.printf("\n%d In userState() for event index = %d", millis(), index);
+
+  // Determine which Frog object has this event index.
+  for (uint8_t i=0; i<NUM_FROG; i++) {
+    Serial.printf("\nChecking for matching Frog %d", i);
+    if (frog[i]->eventIndexMatchesThisFrog(index)) {
+      // This FROG object has this event index.
+      Serial.printf("\nChecking for matching event");
+      if (frog[i]->eventIndexMatchesCurrentState(index)) {
+        return VALID;
+      } else {
+        return INVALID;
+      }
+    }
+  }
+
+  return UNKNOWN; // In case index is not recognised.
+}
+
+// ===== Process Consumer-eventIDs =====
+void pceCallback(uint16_t index) {
+  // Invoked when an event is consumed; drive pins as needed
+  // from index of all events.
+
+  // Determine which frog this event index is for.
+  for (uint8_t i=0; i<NUM_FROG; i++) {
+    if (frog[i]->eventIndexMatchesThisFrog(index)) {
+      // This Frog object has this event index.
+
+      // Set the frog's pins as required.
+      frog[i]->eventReceived(index);
+    }
+  }
+}
+
+
+
 
 void setup() {
   Serial.begin(115200);
   delay(5000);
+  Serial.printf("\n ESP32-2TOTI_Wifi");
 
-  Serial.printf("\nstarted");
+  // Configure the built in blue LED and turn it off.
+  pinMode(LED_BLUE, OUTPUT);
+  digitalWrite(LED_BLUE, HIGH);
 
-  /**
-   * 
-   * Set up the pins to be active high or active low.
-   * This must be done before calling .setPins() as that call will
-   * set all pins to the current inactive state.
-   */
-  myFrog.setPinsActiveHigh();
+  NodeID nodeid(NODE_ADDRESS);       // this node's nodeid
+  Olcb_init(nodeid, RESET_TO_FACTORY_DEFAULTS);
 
-  // Set up the pins which connect the J and K wires to the frog.
-  uint8_t pinConnectJ = 11;
-  uint8_t pinConnectK = 12;
-  myFrog.setPins(pinConnectJ, pinConnectK);
+  // Store the pointers to the frog objects in the frog array.
+  frog[0] = &frog0;
+  frog[1] = &frog1;
 
-  // Set up the events which control the J and K wires.
-  uint16_t eventIndexConnectJ = 21;
-  uint16_t eventIndexConnectK = 22;
-  uint16_t eventIndexDisconnect = 23;  
-  myFrog.setEvents(eventIndexConnectJ, eventIndexConnectK, eventIndexDisconnect);
+  // Initialise all Frog objects.
+  for (uint8_t i=0; i<NUM_FROG; i++) {
+    frog[i]->setDelaymS(5000); // The time that both J and K are disconnected when changing from one to the other.
+    frog[i]->setEvents((i*3)+0, (i*3)+1, (i*3)+2); // Assumes that the first frog event index is 0.
+    frog[i]->print();
+  }
 
-  myFrog.setDelaymS(50); // The default is 100 mS.
+  dP("\n initialization finished");
 
-  // Simulate an event being received.
-  myFrog.eventReceived(eventIndexConnectK);
+  dP("\n NUM_EVENT="); dP(NUM_EVENT);
 }
 
 void loop() {
-  myFrog.process();
+...
+  // Process any frog timeouts.
+  for (uint8_t i=0; i<NUM_FROG; i++) {
+    frog[i]->process();
+  }
+...
 }

@@ -28,10 +28,13 @@ void Frog::eventReceived(uint16_t receivedEventIndex) {
   // Compare receivedEventIndex with each of the three events for this frog.
   if (receivedEventIndex == this->eventIndexConnectJ) {
     myMutex.setPinActive(this->pinConnectJ);
+    this->currentState = State::CONNECTED_J;
   } else if (receivedEventIndex == this->eventIndexConnectK) {
     myMutex.setPinActive(this->pinConnectK);
+    this->currentState = State::CONNECTED_K;
   } else if (receivedEventIndex == this->eventIndexDisconnect) {
     myMutex.setAllPinsInActive();
+    this->currentState = State::DISCONNECTED;
   }
 }
 
@@ -46,4 +49,20 @@ bool Frog::eventIndexMatchesThisFrog(uint16_t index) {
 void Frog::print() {
   Serial.printf("\n%d pinConnectJ=%d, pinConnectK=%d", millis(), pinConnectJ, pinConnectK);
   Serial.printf("\n%d eventIndexConnectJ=%d, eventIndexConnectJ=%d, eventIndexDisconnect=%d,", millis(), eventIndexConnectJ, eventIndexConnectK, eventIndexDisconnect);
+}
+
+bool Frog::eventIndexMatchesCurrentState(uint16_t index) {
+  if (index == this->eventIndexConnectJ) {
+    if (currentState == State::CONNECTED_J) return true; else return false;
+  } 
+  
+  if (index == this->eventIndexConnectK) {
+    if (currentState == State::CONNECTED_K) return true; else return false;
+  }
+
+  if (index == this->eventIndexDisconnect) {
+    if (currentState == State::DISCONNECTED) return true; else return false;
+  }
+
+  return false; // To keep the compiler happy!
 }

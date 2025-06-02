@@ -53,6 +53,12 @@
     bool eventIndexMatchesThisFrog(uint16_t index);
 
     /**
+     * Returns true if index matches the current state, else false.
+     // * e.g. if index == eventIndexOccupied and the current state is occupied, then return true.
+     */
+    bool eventIndexMatchesCurrentState(uint16_t index);
+
+    /**
      * To be called from loop() to enable a delay in switching from one output to another.
      */
     void process() {myMutex.process();}
