@@ -30,7 +30,7 @@
 
  class Frog {
   public:
-    void initialise() { this->currentState = State::DISCONNECTED; }
+    Frog(uint8_t pinConnectJ, uint8_t pinConnectK);
 
     /**
      * Setting the high or low active state
@@ -42,7 +42,6 @@
 
     void setDelaymS(unsigned long delaymS) {myMutex.setDelaymS(delaymS);}
 
-    void setPins(uint8_t pinConnectJ, uint8_t pinConnectK);
     void setEvents(uint16_t eventIndexConnectJ, uint16_t eventIndexConnectK, uint16_t eventIndexDisconnect);
 
     int getEventForCurrentState(); // Used when the hub is (re)connected.
@@ -63,6 +62,8 @@
      * and executes appropriately if any found.
      */
     void eventReceived(uint16_t receivedEventIndex);
+
+    void print();
 
   private:
     enum State { CONNECTED_J, CONNECTED_K, DISCONNECTED };
