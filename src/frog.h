@@ -17,25 +17,20 @@
  * 4. Responds to a query from JMRI for current state based on event index. This uses function userState().
  */
 
- /**
-  * TO DO: need to maintain the current state of the frog - J, K or disconnected.
-  * This will be used to respond to a JMRI request for state.
-  * What to return if in the process of waiting for the timeout to expire? Disconnected need to ensure that this state is kept up to date 
-  * poss delay the servo sending its reached event until it's frog has switched.
-  */
-
 #include <Arduino.h>
 #include "hw_mutex.h"
 #include <vector>
 
  class Frog {
   public:
+    /**
+     * The constructor sets the active state to active low and then
+     * sets all pins inactive.
+     */
     Frog(uint8_t pinConnectJ, uint8_t pinConnectK);
 
     /**
-     * Setting the high or low active state
-     * must be performed before the call to .setPins() as that
-     * call will set all pins to the inactive state.
+     * Allows the active state to be changed after the frog object is cretaed.
      */
     void setPinsActiveHigh() {myMutex.setOutputsActiveHigh();}
     void setPinsActiveLow() {myMutex.setOutputsActiveLow();}
