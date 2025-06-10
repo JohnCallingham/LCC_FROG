@@ -30,7 +30,7 @@
     Frog(uint8_t pinConnectJ, uint8_t pinConnectK);
 
     /**
-     * Allows the active state to be changed after the frog object is cretaed.
+     * Allows the active state to be changed after the frog object is created.
      */
     void setPinsActiveHigh() {myMutex.setOutputsActiveHigh();}
     void setPinsActiveLow() {myMutex.setOutputsActiveLow();}
