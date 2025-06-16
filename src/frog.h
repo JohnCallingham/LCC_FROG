@@ -72,6 +72,10 @@
      */
     void eventReceived(uint16_t receivedEventIndex);
 
+    bool isConnectedJ() { return (currentState == State::CONNECTED_J) ? true : false; }
+
+    bool isConnectedK() { return (currentState == State::CONNECTED_K) ? true : false; }
+
     void print();
 
   private:
