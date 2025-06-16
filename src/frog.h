@@ -19,9 +19,10 @@
 
 #include <Arduino.h>
 #include "hw_mutex.h"
+#include "LCC_Node_Component_Base.h"
 #include <vector>
 
- class Frog {
+ class Frog : public LCC_Node_Component_Base  {
   public:
     /**
      * The constructor sets the active state to active low and then
@@ -45,13 +46,20 @@
     /**
      * Returns true if index matches one of this object's events, else false.
      */
-    bool eventIndexMatchesThisFrog(uint16_t index);
+    // bool eventIndexMatchesThisFrog(uint16_t index);
+    bool eventIndexMatches(uint16_t index) override;
 
     /**
      * Returns true if index matches the current state, else false.
      // * e.g. if index == eventIndexOccupied and the current state is occupied, then return true.
      */
-    bool eventIndexMatchesCurrentState(uint16_t index);
+    bool eventIndexMatchesCurrentState(uint16_t index) override;
+
+    /**
+     * This function is not used in the Frog class,
+     *  but is required to override the base class function.
+     */
+    void sendEventsForCurrentState() override;
 
     /**
      * To be called from loop() to enable a delay in switching from one output to another.
