@@ -3,6 +3,7 @@
 "version": "0.1.1",
 "dependencies":
   {
-    "HW_MUTEX": "https://github.com/JohnCallingham/HW_MUTEX.git"
+    "HW_MUTEX": "https://github.com/JohnCallingham/HW_MUTEX.git",
+    "LCC_NODE_COMPONENT_BASE": "https://github.com/JohnCallingham/LCC_NODE_COMPONENT_BASE.git"
   }
 }
