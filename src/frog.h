@@ -15,6 +15,17 @@
  *  b. eventIndexConnectK - causes the frog to be connected to the K wire.
  *  c. eventIndexDisconnect - causes the frog to disconnect from both the J and K wires.
  * 4. Responds to a query from JMRI for current state based on event index. This uses function userState().
+ * 
+ * Electrical;-
+ *
+ * The ESP32 pin 2 (3V3 OUT) is 3.25/3.26 V.
+ * The ESP32 pin 30 (Frog1 J) is 3.25 V when inactive and 0.00 V when active.
+ * 
+ * The LED in the TLP241 has a forward voltage drop of between 1.1 V and 1.4 V (typical is 1.27 V) at a forward current of 10 mA.
+ * Using a value of 220R for the series resistor gives an LED current of between 9.77 mA and 8.41 mA.
+ * The LED has a recommended operating current of 7.5 mA, with a maximum of 19.5 mA. Absolute maximum is 30 mA.
+ * 
+ * The GPIOs on the Nano ESP32 can handle source currents up to 40 mA, and sink currents up to 28 mA.
  */
 
 #include <Arduino.h>
