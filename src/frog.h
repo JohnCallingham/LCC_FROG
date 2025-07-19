@@ -15,27 +15,34 @@
  *  b. eventIndexConnectK - causes the frog to be connected to the K wire.
  *  c. eventIndexDisconnect - causes the frog to disconnect from both the J and K wires.
  * 4. Responds to a query from JMRI for current state based on event index. This uses function userState().
+ * 
+ * Electrical;-
+ *
+ * The ESP32 pin 2 (3V3 OUT) is 3.25/3.26 V.
+ * The ESP32 pin 30 (Frog1 J) is 3.25 V when inactive and 0.00 V when active.
+ * 
+ * The LED in the TLP241 has a forward voltage drop of between 1.1 V and 1.4 V (typical is 1.27 V) at a forward current of 10 mA.
+ * Using a value of 220R for the series resistor gives an LED current of between 9.77 mA and 8.41 mA.
+ * The LED has a recommended operating current of 7.5 mA, with a maximum of 19.5 mA. Absolute maximum is 30 mA.
+ * 
+ * The GPIOs on the Nano ESP32 can handle source currents up to 40 mA, and sink currents up to 28 mA.
  */
-
- /**
-  * TO DO: need to maintain the current state of the frog - J, K or disconnected.
-  * This will be used to respond to a JMRI request for state.
-  * What to return if in the process of waiting for the timeout to expire? Disconnected need to ensure that this state is kept up to date 
-  * poss delay the servo sending its reached event until it's frog has switched.
-  */
 
 #include <Arduino.h>
 #include "hw_mutex.h"
+#include "LCC_Node_Component_Base.h"
 #include <vector>
 
- class Frog {
+ class Frog : public LCC_Node_Component_Base  {
   public:
+    /**
+     * The constructor sets the active state to active low and then
+     * sets all pins inactive.
+     */
     Frog(uint8_t pinConnectJ, uint8_t pinConnectK);
 
     /**
-     * Setting the high or low active state
-     * must be performed before the call to .setPins() as that
-     * call will set all pins to the inactive state.
+     * Allows the active state to be changed after the frog object is created.
      */
     void setPinsActiveHigh() {myMutex.setOutputsActiveHigh();}
     void setPinsActiveLow() {myMutex.setOutputsActiveLow();}
@@ -50,7 +57,20 @@
     /**
      * Returns true if index matches one of this object's events, else false.
      */
-    bool eventIndexMatchesThisFrog(uint16_t index);
+    // bool eventIndexMatchesThisFrog(uint16_t index);
+    bool eventIndexMatches(uint16_t index) override;
+
+    /**
+     * Returns true if index matches the current state, else false.
+     // * e.g. if index == eventIndexOccupied and the current state is occupied, then return true.
+     */
+    bool eventIndexMatchesCurrentState(uint16_t index) override;
+
+    /**
+     * This function is not used in the Frog class,
+     *  but is required to override the base class function.
+     */
+    void sendEventsForCurrentState() override;
 
     /**
      * To be called from loop() to enable a delay in switching from one output to another.
@@ -62,6 +82,10 @@
      * and executes appropriately if any found.
      */
     void eventReceived(uint16_t receivedEventIndex);
+
+    bool isConnectedJ() { return (currentState == State::CONNECTED_J) ? true : false; }
+
+    bool isConnectedK() { return (currentState == State::CONNECTED_K) ? true : false; }
 
     void print();
 
