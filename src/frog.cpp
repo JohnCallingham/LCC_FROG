@@ -18,10 +18,11 @@ Frog::Frog(uint8_t pinConnectJ, uint8_t pinConnectK) {
   this->currentState = State::DISCONNECTED;
 }
 
-void Frog::setEvents(uint16_t eventIndexConnectJ, uint16_t eventIndexConnectK, uint16_t eventIndexDisconnect) {
+void Frog::setEvents(uint16_t eventIndexConnectJ, uint16_t eventIndexDisconnectJ, uint16_t eventIndexConnectK, uint16_t eventIndexDisconnectK) {
   this->eventIndexConnectJ = eventIndexConnectJ;
+  this->eventIndexDisconnectJ = eventIndexDisconnectJ;
   this->eventIndexConnectK = eventIndexConnectK;
-  this->eventIndexDisconnect = eventIndexDisconnect;
+  this->eventIndexDisconnectK = eventIndexDisconnectK;
 }
 
 void Frog::eventReceived(uint16_t receivedEventIndex) {
@@ -32,7 +33,10 @@ void Frog::eventReceived(uint16_t receivedEventIndex) {
   } else if (receivedEventIndex == this->eventIndexConnectK) {
     myMutex.setPinActive(this->pinConnectK);
     this->currentState = State::CONNECTED_K;
-  } else if (receivedEventIndex == this->eventIndexDisconnect) {
+  } else if (receivedEventIndex == this->eventIndexDisconnectJ) {
+    myMutex.setAllPinsInActive();
+    this->currentState = State::DISCONNECTED;
+  } else if (receivedEventIndex == this->eventIndexDisconnectK) {
     myMutex.setAllPinsInActive();
     this->currentState = State::DISCONNECTED;
   }
@@ -47,8 +51,9 @@ void Frog::eventReceived(uint16_t receivedEventIndex) {
 // }
 bool Frog::eventIndexMatches(uint16_t index) {
   if ((index == this->eventIndexConnectJ) ||
+      (index == this->eventIndexDisconnectJ) ||
       (index == this->eventIndexConnectK) ||
-      (index == this->eventIndexDisconnect)) return true;
+      (index == this->eventIndexDisconnectK)) return true;
 
   return false;
 }
@@ -62,7 +67,11 @@ bool Frog::eventIndexMatchesCurrentState(uint16_t index) {
     return (currentState == State::CONNECTED_K);
   }
 
-  if (index == this->eventIndexDisconnect) {
+  if (index == this->eventIndexDisconnectJ) {
+    return (currentState == State::DISCONNECTED);
+  }
+
+  if (index == this->eventIndexDisconnectK) {
     return (currentState == State::DISCONNECTED);
   }
 
@@ -73,5 +82,5 @@ void Frog::sendEventsForCurrentState(){}
 
 void Frog::print() {
   //Serial.printf("\npinConnectJ=%d, pinConnectK=%d", pinConnectJ, pinConnectK);
-  Serial.printf("\neventIndexConnectJ=%#02X, eventIndexConnectJ=%#02X, eventIndexDisconnect=%#02X,", eventIndexConnectJ, eventIndexConnectK, eventIndexDisconnect);
+  Serial.printf("\neventIndexConnectJ=%#02X, eventIndexDisconnectJ=%#02X, eventIndexConnectK=%#02X, eventIndexDisconnectK=%#02X,", eventIndexConnectJ, eventIndexDisconnectJ, eventIndexConnectK, eventIndexDisconnectK);
 }

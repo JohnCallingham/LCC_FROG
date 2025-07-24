@@ -13,7 +13,8 @@
  * 3. When an event is consumed it provides the appropriate action. The events and associated actions are;-
  *  a. eventIndexConnectJ - causes the frog to be connected to the J wire.
  *  b. eventIndexConnectK - causes the frog to be connected to the K wire.
- *  c. eventIndexDisconnect - causes the frog to disconnect from both the J and K wires.
+ *  c. eventIndexDisconnectJ - causes the frog to disconnect from both the J and K wires.
+ *  c. eventIndexDisconnectK - causes the frog to disconnect from both the J and K wires.
  * 4. Responds to a query from JMRI for current state based on event index. This uses function userState().
  * 
  * Electrical;-
@@ -49,7 +50,7 @@
 
     void setDelaymS(unsigned long delaymS) {myMutex.setDelaymS(delaymS);}
 
-    void setEvents(uint16_t eventIndexConnectJ, uint16_t eventIndexConnectK, uint16_t eventIndexDisconnect);
+    void setEvents(uint16_t eventIndexConnectJ, uint16_t eventIndexDisconnectJ, uint16_t eventIndexConnectK, uint16_t eventIndexDisconnectK);
 
     int getEventForCurrentState(); // Used when the hub is (re)connected.
     // BUT: don't think that we can send an event which is a consumer event!!!
@@ -57,12 +58,11 @@
     /**
      * Returns true if index matches one of this object's events, else false.
      */
-    // bool eventIndexMatchesThisFrog(uint16_t index);
     bool eventIndexMatches(uint16_t index) override;
 
     /**
      * Returns true if index matches the current state, else false.
-     // * e.g. if index == eventIndexOccupied and the current state is occupied, then return true.
+     * e.g. if index == eventIndexOccupied and the current state is occupied, then return true.
      */
     bool eventIndexMatchesCurrentState(uint16_t index) override;
 
@@ -75,7 +75,7 @@
     /**
      * To be called from loop() to enable a delay in switching from one output to another.
      */
-    void process() {myMutex.process();}
+    void process() { myMutex.process(); }
 
     /**
      * Compares receivedEventIndex with those stored for this frog
@@ -94,8 +94,9 @@
     uint8_t pinConnectJ; // Setting this pin active will connect the frog to the J wire.
     uint8_t pinConnectK; // Setting this pin active will connect the frog to the K wire.
     uint16_t eventIndexConnectJ; // Receiving this event will set pinConnectJ active.
+    uint16_t eventIndexDisconnectJ; // Receiving this event will set pinConnectJ inactive.
     uint16_t eventIndexConnectK; // Receiving this event will set pinConnectK active.
-    uint16_t eventIndexDisconnect; // Receiving this event will set pinConnectJ and pinConnectK inactive.
+    uint16_t eventIndexDisconnectK; // Receiving this event will set pinConnectK inactive.
     State currentState;
 
     // A software object to ensure that the frog can only be connected to one of J and K at a time.
