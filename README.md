@@ -1,5 +1,5 @@
 # LCC_FROG
 
-This library has been designed to be part of the ESP32_2Servo_2Frog_2TOTI_WiFi program. It is part of a suite of libraries which can be used as part of an OpenLCB/LCC node.
+This component is part of a suite of components which can be used as part of a program which implements an OpenLCB/LCC node. It has been developed using PlatformIO and has been tested on an Arduino Nano ESP32.
 
-This library has been developed using PlatformIO.
+The file frog.h contains a single class which represents one frog. 
