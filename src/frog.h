@@ -52,7 +52,7 @@
 
     void setEvents(uint16_t eventIndexConnectJ, uint16_t eventIndexDisconnectJ, uint16_t eventIndexConnectK, uint16_t eventIndexDisconnectK);
 
-    int getEventForCurrentState(); // Used when the hub is (re)connected.
+    // int getEventForCurrentState(); // Used when the hub is (re)connected.
     // BUT: don't think that we can send an event which is a consumer event!!!
 
     /**
