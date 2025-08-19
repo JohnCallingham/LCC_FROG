@@ -26,7 +26,7 @@ void Frog::setEvents(uint16_t eventIndexConnectJ, uint16_t eventIndexDisconnectJ
 }
 
 void Frog::eventReceived(uint16_t receivedEventIndex) {
-  // Compare receivedEventIndex with each of the three events for this frog.
+  // Compare receivedEventIndex with each of the four events for this frog.
   if (receivedEventIndex == this->eventIndexConnectJ) {
     myMutex.setPinActive(this->pinConnectJ);
     this->currentState = State::CONNECTED_J;
