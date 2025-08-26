@@ -42,13 +42,6 @@ void Frog::eventReceived(uint16_t receivedEventIndex) {
   }
 }
 
-// bool Frog::eventIndexMatchesThisFrog(uint16_t index) {
-//   if ((index == this->eventIndexConnectJ) ||
-//       (index == this->eventIndexConnectK) ||
-//       (index == this->eventIndexDisconnect)) return true;
-
-//   return false;
-// }
 bool Frog::eventIndexMatches(uint16_t index) {
   if ((index == this->eventIndexConnectJ) ||
       (index == this->eventIndexDisconnectJ) ||
@@ -81,6 +74,5 @@ bool Frog::eventIndexMatchesCurrentState(uint16_t index) {
 void Frog::sendEventsForCurrentState(){}
 
 void Frog::print() {
-  //Serial.printf("\npinConnectJ=%d, pinConnectK=%d", pinConnectJ, pinConnectK);
   Serial.printf("\neventIndexConnectJ=%#02X, eventIndexDisconnectJ=%#02X, eventIndexConnectK=%#02X, eventIndexDisconnectK=%#02X,", eventIndexConnectJ, eventIndexDisconnectJ, eventIndexConnectK, eventIndexDisconnectK);
 }

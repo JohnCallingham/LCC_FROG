@@ -6,27 +6,20 @@
  * 
  * The Frog class represents one frog. It provides the following functionlity;-
  * 1. Initialise the object without sending any events.
- * 2. CANNOT DO THIS AS CONSUMED EVENTS CANNOT BE SENT!!! When the hub is connected it sends an event to indicate its current state which can be one of;-
+ * 2. CANNOT DO THIS AS CONSUMED EVENTS CANNOT BE SENT!!! When the hub is connected
+ *    it sends an event to indicate its current state which can be one of;-
  *  a. frog connected to the J wire.
  *  b. frog connected to the K wire.
  *  c. frog disconnected from both the J and K wires.
- * 3. When an event is consumed it provides the appropriate action. The events and associated actions are;-
+ * 3. When an event is consumed it provides the appropriate action.
+ *  The events and associated actions are;-
  *  a. eventIndexConnectJ - causes the frog to be connected to the J wire.
  *  b. eventIndexConnectK - causes the frog to be connected to the K wire.
  *  c. eventIndexDisconnectJ - causes the frog to disconnect from both the J and K wires.
  *  c. eventIndexDisconnectK - causes the frog to disconnect from both the J and K wires.
- * 4. Responds to a query from JMRI for current state based on event index. This uses function userState().
+ * 4. Responds to a query from JMRI for current state based on event index.
+ *  This uses function userState().
  * 
- * Electrical;-
- *
- * The ESP32 pin 2 (3V3 OUT) is 3.25/3.26 V.
- * The ESP32 pin 30 (Frog1 J) is 3.25 V when inactive and 0.00 V when active.
- * 
- * The LED in the TLP241 has a forward voltage drop of between 1.1 V and 1.4 V (typical is 1.27 V) at a forward current of 10 mA.
- * Using a value of 220R for the series resistor gives an LED current of between 9.77 mA and 8.41 mA.
- * The LED has a recommended operating current of 7.5 mA, with a maximum of 19.5 mA. Absolute maximum is 30 mA.
- * 
- * The GPIOs on the Nano ESP32 can handle source currents up to 40 mA, and sink currents up to 28 mA.
  */
 
 #include <Arduino.h>
