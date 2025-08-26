@@ -71,8 +71,6 @@ bool Frog::eventIndexMatchesCurrentState(uint16_t index) {
   return false; // To keep the compiler happy!
 }
 
-void Frog::sendEventsForCurrentState(){}
-
 void Frog::print() {
   Serial.printf("\neventIndexConnectJ=%#02X, eventIndexDisconnectJ=%#02X, eventIndexConnectK=%#02X, eventIndexDisconnectK=%#02X,", eventIndexConnectJ, eventIndexDisconnectJ, eventIndexConnectK, eventIndexDisconnectK);
 }

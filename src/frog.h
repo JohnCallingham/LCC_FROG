@@ -5,12 +5,9 @@
  * frog.h
  * 
  * The Frog class represents one frog. It provides the following functionlity;-
- * 1. Initialise the object without sending any events.
- * 2. CANNOT DO THIS AS CONSUMED EVENTS CANNOT BE SENT!!! When the hub is connected
- *    it sends an event to indicate its current state which can be one of;-
- *  a. frog connected to the J wire.
- *  b. frog connected to the K wire.
- *  c. frog disconnected from both the J and K wires.
+ * 1. The outputs can be configured to be active high or active low.
+ * 2. When the frog is switched from J to K there is a configurable delay
+ *     when both outputs are inactive.
  * 3. When an event is consumed it provides the appropriate action.
  *  The events and associated actions are;-
  *  a. eventIndexConnectJ - causes the frog to be connected to the J wire.
@@ -18,8 +15,6 @@
  *  c. eventIndexDisconnectJ - causes the frog to disconnect from both the J and K wires.
  *  c. eventIndexDisconnectK - causes the frog to disconnect from both the J and K wires.
  * 4. Responds to a query from JMRI for current state based on event index.
- *  This uses function userState().
- * 
  */
 
 #include <Arduino.h>
@@ -45,9 +40,6 @@
 
     void setEvents(uint16_t eventIndexConnectJ, uint16_t eventIndexDisconnectJ, uint16_t eventIndexConnectK, uint16_t eventIndexDisconnectK);
 
-    // int getEventForCurrentState(); // Used when the hub is (re)connected.
-    // BUT: don't think that we can send an event which is a consumer event!!!
-
     /**
      * Returns true if index matches one of this object's events, else false.
      */
@@ -63,7 +55,7 @@
      * This function is not used in the Frog class,
      *  but is required to override the base class function.
      */
-    void sendEventsForCurrentState() override;
+    void sendEventsForCurrentState() override {};
 
     /**
      * To be called from loop() to enable a delay in switching from one output to another.
