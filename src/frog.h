@@ -60,7 +60,8 @@
     /**
      * To be called from loop() to enable a delay in switching from one output to another.
      */
-    void process() { myMutex.process(); }
+    // void process() { myMutex.process(); }
+    void loop() { myMutex.loop(); }
 
     /**
      * Compares receivedEventIndex with those stored for this frog
