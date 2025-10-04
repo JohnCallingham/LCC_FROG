@@ -1,6 +1,8 @@
 #include "frog.h"
 
-Frog::Frog(uint8_t pinConnectJ, uint8_t pinConnectK) {
+Frog::Frog(uint8_t frogNumber, uint8_t pinConnectJ, uint8_t pinConnectK) {
+  this->frogNumber = frogNumber;
+
   // Set the pins.
   this->pinConnectJ = pinConnectJ;
   this->pinConnectK = pinConnectK;
@@ -30,10 +32,10 @@ void Frog::eventReceived(uint16_t index) {
    * Handle the test cycle start and stop events.
    */
   if (index == testStartEventIndex) {
-    Serial.printf("\nFrog on J pin %d starting the testing cycle.", pinConnectJ);
+    Serial.printf("\nFrog %d starting the testing cycle.", frogNumber);
   }
   if (index == testStopEventIndex) {
-    Serial.printf("\nFrog on J pin %d stopping the testing cycle.", pinConnectJ);
+    Serial.printf("\nFrog %d stopping the testing cycle.", frogNumber);
   }
 
   // Compare receivedEventIndex with each of the four events for this frog.

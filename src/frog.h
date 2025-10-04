@@ -28,7 +28,7 @@
      * The constructor sets the active state to active low and then
      * sets all pins inactive.
      */
-    Frog(uint8_t pinConnectJ, uint8_t pinConnectK);
+    Frog(uint8_t frogNumber, uint8_t pinConnectJ, uint8_t pinConnectK);
 
     /**
      * Allows the active state to be changed after the frog object is created.
@@ -76,14 +76,18 @@
     void print();
 
   private:
+    uint8_t frogNumber;
+
     enum State { CONNECTED_J, CONNECTED_K, DISCONNECTED };
+    State currentState;
+
     uint8_t pinConnectJ; // Setting this pin active will connect the frog to the J wire.
     uint8_t pinConnectK; // Setting this pin active will connect the frog to the K wire.
+
     uint16_t eventIndexConnectJ; // Receiving this event will set pinConnectJ active.
     uint16_t eventIndexDisconnectJ; // Receiving this event will set pinConnectJ inactive.
     uint16_t eventIndexConnectK; // Receiving this event will set pinConnectK active.
     uint16_t eventIndexDisconnectK; // Receiving this event will set pinConnectK inactive.
-    State currentState;
 
     // A software object to ensure that the frog can only be connected to one of J and K at a time.
     HwMutex myMutex;
