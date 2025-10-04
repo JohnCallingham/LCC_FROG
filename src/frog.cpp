@@ -25,24 +25,38 @@ void Frog::setEvents(uint16_t eventIndexConnectJ, uint16_t eventIndexDisconnectJ
   this->eventIndexDisconnectK = eventIndexDisconnectK;
 }
 
-void Frog::eventReceived(uint16_t receivedEventIndex) {
+void Frog::eventReceived(uint16_t index) {
+  /**
+   * Handle the test cycle start and stop events.
+   */
+  if (index == testStartEventIndex) {
+    Serial.printf("\nFrog on J pin %d starting the testing cycle.", pinConnectJ);
+  }
+  if (index == testStopEventIndex) {
+    Serial.printf("\nFrog on J pin %d stopping the testing cycle.", pinConnectJ);
+  }
+
   // Compare receivedEventIndex with each of the four events for this frog.
-  if (receivedEventIndex == this->eventIndexConnectJ) {
+  if (index == this->eventIndexConnectJ) {
     myMutex.setPinActive(this->pinConnectJ);
     this->currentState = State::CONNECTED_J;
-  } else if (receivedEventIndex == this->eventIndexConnectK) {
+  } else if (index == this->eventIndexConnectK) {
     myMutex.setPinActive(this->pinConnectK);
     this->currentState = State::CONNECTED_K;
-  } else if (receivedEventIndex == this->eventIndexDisconnectJ) {
+  } else if (index == this->eventIndexDisconnectJ) {
     myMutex.setAllPinsInActive();
     this->currentState = State::DISCONNECTED;
-  } else if (receivedEventIndex == this->eventIndexDisconnectK) {
+  } else if (index == this->eventIndexDisconnectK) {
     myMutex.setAllPinsInActive();
     this->currentState = State::DISCONNECTED;
   }
 }
 
 bool Frog::eventIndexMatches(uint16_t index) {
+  // Check for one of the testing event indexes.
+  if ((index == this->testStartEventIndex) ||
+      (index == this->testStopEventIndex)) return true;
+
   if ((index == this->eventIndexConnectJ) ||
       (index == this->eventIndexDisconnectJ) ||
       (index == this->eventIndexConnectK) ||
