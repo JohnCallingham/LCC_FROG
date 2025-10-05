@@ -22,7 +22,7 @@
 #include "LCC_Node_Component_Base.h"
 #include <vector>
 
- class Frog : public LCC_Node_Component_Base  {
+class Frog : public LCC_Node_Component_Base  {
   public:
     /**
      * The constructor sets the active state to active low and then
@@ -59,15 +59,16 @@
 
     /**
      * To be called from loop() to enable a delay in switching from one output to another.
+     * Also allows a testing cycle to be run when required.
      */
-    // void process() { myMutex.process(); }
-    void loop() { myMutex.loop(); }
-
+    // void loop() { myMutex.loop(); }
+    void loop();
+ 
     /**
-     * Compares receivedEventIndex with those stored for this frog
+     * Compares index with those stored for this frog
      * and executes appropriately if any found.
      */
-    void eventReceived(uint16_t receivedEventIndex);
+    void eventReceived(uint16_t index);
 
     bool isConnectedJ() { return (currentState == State::CONNECTED_J) ? true : false; }
 
@@ -91,6 +92,14 @@
 
     // A software object to ensure that the frog can only be connected to one of J and K at a time.
     HwMutex myMutex;
- };
+
+    bool testing = false;
+    unsigned long testingTimer; // Contains the value of millis() for the next change in the testing cycle.
+
+    enum Test { CONNECT_J, DISCONNECT_J, CONNECT_K, DISCONNECT_K };
+    Test currentTest;
+
+    void testLoop();
+};
  
 #endif

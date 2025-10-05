@@ -27,16 +27,43 @@ void Frog::setEvents(uint16_t eventIndexConnectJ, uint16_t eventIndexDisconnectJ
   this->eventIndexDisconnectK = eventIndexDisconnectK;
 }
 
+void Frog::loop() {
+  myMutex.loop();
+
+  if (testing) {
+    testLoop();
+  }
+}
+
 void Frog::eventReceived(uint16_t index) {
   /**
    * Handle the test cycle start and stop events.
    */
   if (index == testStartEventIndex) {
     Serial.printf("\nFrog %d starting the testing cycle.", frogNumber);
+
+    // Disconnect this frog from both J and K wires so that testing starts from a known condition.
+    myMutex.setAllPinsInActive();
+
+    // Set the first test.
+    currentTest = CONNECT_J;
+
+    // Set the timer so that testing starts immediately.
+    testingTimer = millis();
+
+    testing = true;
   }
   if (index == testStopEventIndex) {
     Serial.printf("\nFrog %d stopping the testing cycle.", frogNumber);
+
+    // Disconnect this frog from both J and K wires in case testing has left the frog connected.
+    myMutex.setAllPinsInActive();
+
+    testing = false;
   }
+
+  // Stop normal operation if testing.
+  if (testing) return;
 
   // Compare receivedEventIndex with each of the four events for this frog.
   if (index == this->eventIndexConnectJ) {
@@ -89,4 +116,60 @@ bool Frog::eventIndexMatchesCurrentState(uint16_t index) {
 
 void Frog::print() {
   Serial.printf("\neventIndexConnectJ=%#02X, eventIndexDisconnectJ=%#02X, eventIndexConnectK=%#02X, eventIndexDisconnectK=%#02X,", eventIndexConnectJ, eventIndexDisconnectJ, eventIndexConnectK, eventIndexDisconnectK);
+}
+
+void Frog::testLoop() {
+
+  if (millis() >= testingTimer) {
+    // Time to move to the next part of the test cycle.
+    switch (currentTest) {
+      case CONNECT_J:
+        // Start this cycle of the tests.
+        // Connect this frog to the J wire for one second.
+        myMutex.setPinActive(this->pinConnectJ);
+        testingTimer = millis() + 1000;
+
+        // Set the next test.
+        currentTest = DISCONNECT_J;
+
+        break;
+      
+      case DISCONNECT_J:
+        // Start this cycle of the tests.
+        // Disconnect this frog from the J wire for one second.
+        myMutex.setAllPinsInActive();
+        testingTimer = millis() + 1000;
+
+        // Set the next test.
+        currentTest = CONNECT_K;
+
+        break;
+      
+      case CONNECT_K:
+        // Start this cycle of the tests.
+        // Connect this frog to the K wire for one second.
+        myMutex.setPinActive(this->pinConnectK);
+        testingTimer = millis() + 1000;
+
+        // Set the next test.
+        currentTest = DISCONNECT_K;
+
+        break;
+      
+      case DISCONNECT_K:
+        // Start this cycle of the tests.
+        // Disconnect this frog from the K wire for one second.
+        myMutex.setAllPinsInActive();
+        testingTimer = millis() + 1000;
+
+        // Set the next test.
+        // Repeat from the start.
+        currentTest = CONNECT_J;
+
+        break;
+      
+      default:
+        break;
+    }
+  }
 }
