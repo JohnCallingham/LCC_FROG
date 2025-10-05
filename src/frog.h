@@ -93,8 +93,9 @@ class Frog : public LCC_Node_Component_Base  {
     // A software object to ensure that the frog can only be connected to one of J and K at a time.
     HwMutex myMutex;
 
-    bool testing = false;
-    unsigned long testingTimer; // Contains the value of millis() for the next change in the testing cycle.
+    // Moved to the base class.
+    // bool testing = false;
+    // unsigned long testingTimer; // Contains the value of millis() for the next change in the testing cycle.
 
     enum Test { CONNECT_J, DISCONNECT_J, CONNECT_K, DISCONNECT_K };
     Test currentTest;
