@@ -97,6 +97,7 @@ class Frog : public LCC_Node_Component_Base  {
     // bool testing = false;
     // unsigned long testingTimer; // Contains the value of millis() for the next change in the testing cycle.
 
+    // Define the test cycles and track the current test cycle.
     enum Test { CONNECT_J, DISCONNECT_J, CONNECT_K, DISCONNECT_K };
     Test currentTest;
 
